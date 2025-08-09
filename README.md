@@ -1,5 +1,7 @@
 # Image Smart Browser (PySide6)
 
+<img src="images/sib.png" alt="screenshot" width="600">
+
 A lightweight image explorer built with Python + PySide6.  
 Browse a folder recursively, filter, open, copy paths, and delete images.  
 Supports multi-selection (Ctrl/Shift), thumbnails, progress loader, list/icon views, and persistent settings.
