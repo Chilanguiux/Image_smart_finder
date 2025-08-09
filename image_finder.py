@@ -313,7 +313,9 @@ class MainWindow(QtWidgets.QWidget):
             lambda: self._start_scan(self.path_edit.text())
         )
 
-        self._debounce_timer = QtCore.QTimer(self, interval=250, singleShot=True)
+        self._debounce_timer: QtCore.QTimer = QtCore.QTimer(self)
+        self._debounce_timer.setInterval(250)
+        self._debounce_timer.setSingleShot(True)
         self.filter_edit.textChanged.connect(lambda _t: self._debounce_timer.start())
 
         def apply_filter_and_update():
