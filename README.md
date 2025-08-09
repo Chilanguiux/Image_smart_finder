@@ -1,4 +1,4 @@
-# Image Smart Finder (PySide6)
+# Image Smart Browser (PySide6)
 
 A lightweight image explorer built with Python + PySide6.  
 Browse a folder recursively, filter, open, copy paths, and delete images.  
