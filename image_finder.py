@@ -47,9 +47,6 @@ def scan_images(root: str, exts: Iterable[str] = IMAGE_EXTENSIONS) -> List[str]:
     return out
 
 
-# =========================
-#        MODEL
-# =========================
 class ImageListModel(QtCore.QAbstractListModel):
     """
     Read-only model that exposes image paths, their display names, and an icon/thumbnail for use in a QListView.
@@ -88,7 +85,6 @@ class ImageListModel(QtCore.QAbstractListModel):
     def roleNames(self) -> dict[int, bytes]:  # type: ignore[override]
         return {self.FILEPATH_ROLE: b"filepath"}
 
-    # ---- Mutadores ----
     def replace(self, paths: List[str]) -> None:
         """Replace all paths in the model with a new list."""
         self.beginResetModel()
@@ -107,7 +103,6 @@ class ImageListModel(QtCore.QAbstractListModel):
         self._thumbs.pop(path, None)
         self.endRemoveRows()
 
-    # ---- Utilidades ----
     def _make_icon(self, path: str) -> QtGui.QIcon:
         """Make an icon from the image at 'path', scaled to thumb size."""
         size = QtCore.QSize(self._thumb_size, self._thumb_size)
@@ -248,7 +243,6 @@ class MainWindow(QtWidgets.QWidget):
         self._restore_settings()
         self._update_counts_and_empty()
 
-    # ---------- Construcción UI ----------
     def _build_ui(self) -> None:
         """Creates the UI components and layout."""
         self.setWindowTitle("Smart Image Explorer - SIE")
