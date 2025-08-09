@@ -19,6 +19,10 @@ jobs:
       QT_QPA_PLATFORM: offscreen
       PYSIDE_DISABLE_INTERNAL_QT_CONF: "1"
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,17 +34,14 @@ jobs:
           cache: "pip"
 
       - name: Upgrade pip
-        shell: bash
         run: python -m pip install -U pip
 
-      - name: Install project deps
-        shell: bash
+      - name: Install project dependencies
         run: |
           pip install -r requirements.txt
           pip install pytest mypy
 
       - name: Mypy (static typing)
-        shell: bash
         run: |
           if [[ -f mypy.ini ]]; then
             echo "mypy.ini found:"
@@ -52,5 +53,4 @@ jobs:
           fi
 
       - name: Pytest (unit tests)
-        shell: bash
         run: pytest -q
