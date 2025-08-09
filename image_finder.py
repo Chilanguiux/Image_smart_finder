@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-try:
-    from PySide6 import QtCore, QtGui, QtWidgets
-except ImportError:  # Maya/Nuke compatibility
-    from PySide2 import QtCore, QtGui, QtWidgets  # type: ignore
+from PySide6 import QtCore, QtGui, QtWidgets
 
 import os
 import threading
