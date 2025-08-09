@@ -245,7 +245,7 @@ class MainWindow(QtWidgets.QWidget):
 
     def _build_ui(self) -> None:
         """Creates the UI components and layout."""
-        self.setWindowTitle("Smart Image Explorer - SIE")
+        self.setWindowTitle("Smart Image Browser - SIB")
 
         self.path_edit = QtWidgets.QLineEdit()
         self.path_edit.setPlaceholderText("Folder to scan…")
@@ -423,7 +423,7 @@ class MainWindow(QtWidgets.QWidget):
         start_dir = self.path_edit.text().strip() or QtCore.QDir.homePath()
         path = QtWidgets.QFileDialog.getExistingDirectory(
             self,
-            "Selecciona carpeta",
+            "Select folder to scan",
             start_dir,
             QtWidgets.QFileDialog.Option.ShowDirsOnly,
         )
@@ -432,15 +432,15 @@ class MainWindow(QtWidgets.QWidget):
             self._update_counts_and_empty()
 
     def _start_scan(self, path: str) -> None:
-        """Inicia el escaneo de imágenes en la carpeta dada."""
+        """Initiate scan."""
         self.view_model.scan(path)
 
     def _update_open_enabled(self) -> None:
-        """Habilita o deshabilita el botón 'Abrir selección' según haya selección."""
+        """sets the Open button enabled/disabled based on selection."""
         self.open_button.setEnabled(len(self._selected_filepaths()) > 0)
 
     def _open_selected_files(self) -> None:
-        """Abre todas las rutas seleccionadas con el visor por defecto del sistema."""
+        """opens the selected files with the default viewer."""
         paths = self._selected_filepaths()
         if not paths:
             return
@@ -448,32 +448,32 @@ class MainWindow(QtWidgets.QWidget):
             QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(p))
 
     def _copy_selected_paths_to_clipboard(self) -> None:
-        """Copia al portapapeles todas las rutas seleccionadas (una por línea)."""
+        """Copies selected file paths to the clipboard."""
         paths = self._selected_filepaths()
         if not paths:
             return
         QtWidgets.QApplication.clipboard().setText("\n".join(paths))
         QtWidgets.QToolTip.showText(
-            QtGui.QCursor.pos(), f"{len(paths)} ruta(s) copiadas"
+            QtGui.QCursor.pos(), f"{len(paths)} path(s) copied to clipboard."
         )
 
     def _delete_selected_files(self) -> None:
-        """Elimina todos los archivos seleccionados tras confirmación."""
+        """Deletes the selected files after confirmation."""
         paths = self._selected_filepaths()
         if not paths:
             return
 
         if len(paths) == 1:
             base = os.path.basename(paths[0])
-            msg = f"¿Realmente deseas eliminar este archivo?\n\n{base}"
+            msg = f"¿Do you really want to delete this file(s)?\n\n{base}"
         else:
             sample = "\n".join(os.path.basename(p) for p in paths[:5])
             more = f"\n…y {len(paths)-5} más" if len(paths) > 5 else ""
-            msg = f"¿Eliminar {len(paths)} archivos?\n\n{sample}{more}"
+            msg = f"¿Delete {len(paths)} file(s)?\n\n{sample}{more}"
 
         resp = QtWidgets.QMessageBox.question(
             self,
-            "Eliminar",
+            "Delete file(s)",
             msg,
             QtWidgets.QMessageBox.StandardButton.Yes
             | QtWidgets.QMessageBox.StandardButton.No,
@@ -492,13 +492,13 @@ class MainWindow(QtWidgets.QWidget):
 
         if errors:
             QtWidgets.QMessageBox.critical(
-                self, "Errores al eliminar", "\n".join(errors)
+                self, "Errors while deleting", "\n".join(errors)
             )
 
         self._update_counts_and_empty()
 
     def _on_context_menu(self, pos: QtCore.QPoint) -> None:
-        """Muestra menú contextual; añade el item bajo cursor a la selección si no estaba."""
+        """Shows a context menu with actions for the selected item."""
         index_at_pos = self.view.indexAt(pos)
         if index_at_pos.isValid():
             selection_model = self.view.selectionModel()
@@ -511,9 +511,9 @@ class MainWindow(QtWidgets.QWidget):
             self.view.setCurrentIndex(index_at_pos)
 
         menu = QtWidgets.QMenu(self)
-        act_open = menu.addAction("Abrir")
-        act_copy = menu.addAction("Copiar rutas")
-        act_delete = menu.addAction("Eliminar…")
+        act_open = menu.addAction("Open with default viewer")
+        act_copy = menu.addAction("Copy paths to clipboard")
+        act_delete = menu.addAction("Delete selected file(s)…")
 
         chosen = menu.exec(self.view.viewport().mapToGlobal(pos))
         if chosen == act_open:
